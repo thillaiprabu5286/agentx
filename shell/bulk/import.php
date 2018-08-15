@@ -40,6 +40,7 @@ class Dever_Shell_Import_Import extends Mage_Shell_Abstract
 
     public function saveProductOptions()
     {
+        $debug = true;
         /** @var Dever_Import_Model_Import $model */
         $model = Mage::getModel('dever_import/import');
         try {
@@ -50,6 +51,8 @@ class Dever_Shell_Import_Import extends Mage_Shell_Abstract
                         $csvHeaders = $lines;
                     } else {
                         $arrayCombined = array_combine($csvHeaders, $lines);
+                        //print_r($arrayCombined);
+                        //exit;
                         $model->saveProductOptions($arrayCombined);
                     }
                 }
@@ -99,6 +102,7 @@ class Dever_Shell_Import_Import extends Mage_Shell_Abstract
                 {
                     echo "--Prepare Product Save ...\n";
                     $model->saveProduct($data, $this->getArg('mediaDir'));
+                    //exit;
                     echo "--End Product Save ...\n";
                 }
 

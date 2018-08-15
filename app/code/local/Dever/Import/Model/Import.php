@@ -9,6 +9,7 @@ class Dever_Import_Model_Import extends Mage_Core_Model_Abstract
 {
     public function saveProductOptions($data)
     {
+        $debug = true;
         /** @var Dever_Import_Helper_Import $helper */
         $helper = Mage::helper('dever_import/import');
 
@@ -77,14 +78,6 @@ class Dever_Import_Model_Import extends Mage_Core_Model_Abstract
             $product = Mage::getModel('catalog/product');
             $product->load(null);
 
-            //Get Attribute set id by name
-            $attrbiuteSetModel = Mage::getModel('eav/entity_attribute_set');
-            $attrbiuteSetCollection = $attrbiuteSetModel->getCollection()
-                ->addFieldToFilter('attribute_set_name', $index['group']);
-            foreach ($attrbiuteSetCollection as $attrbiuteSet) {
-                $attributeSetId = $attrbiuteSet->getAttributeSetId();
-            }
-
             // Basic product details
             if (empty($index['sku'])) {
                 throw new Exception("\t Skip row - Missing sku \n");
@@ -93,16 +86,23 @@ class Dever_Import_Model_Import extends Mage_Core_Model_Abstract
                 ->setSku($index['sku'])
                 ->setTypeId('simple')
                 ->setWeight(1)
-                ->setWebsiteIds(array(1))
-                ->setAttributeSetId($attributeSetId)
+                ->setWebsiteIds(array(2))
+                ->setAttributeSetId(4)
                 ->setCreatedAt(strtotime('now'))
                 ->setTaxClassId(4)
                 ->setVisibility(Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH)
                 ->setName($index['name'])
+                ->setDescription($index['name'])
+                ->setShortDescription($index['name'])
                 ->setStatus(1);
 
             if ($index['category']) {
-                $categoryIds = explode('/', $index['category']);
+                //Get Category Id by name
+                $category = Mage::getModel('catalog/category')
+                    ->getCollection()
+                    ->addAttributeToFilter('name', $index['category'])
+                    ->getFirstItem();
+                $categoryIds = explode('/', $category->getId());
                 $product->setCategoryIds($categoryIds);
                 unset($index['category']);
             }
@@ -110,13 +110,6 @@ class Dever_Import_Model_Import extends Mage_Core_Model_Abstract
             if ($index['images']) {
                 $this->addImages($product, $index['images'], $mediaDir);
                 unset($index['images']);
-            }
-
-            //Special Case for Desc
-            if ($index['description']) {
-                $product->setData('description', html_entity_decode($index['description']));
-                $product->setData('short_description', html_entity_decode($index['short_description']));
-                unset($index['description'],$index['short_description']);
             }
 
             //Price fields
@@ -127,28 +120,15 @@ class Dever_Import_Model_Import extends Mage_Core_Model_Abstract
             if ($product->save()) {
                 //Stock Data
                 $_product = Mage::getModel('catalog/product')->load($product->getId());
-                if ($index['qty'] > 0) {
-
-                    $_product->setStockData(
-                        array (
-                            'use_config_manage_stock' => 0,
-                            'manage_stock' => 1,
-                            'min_sale_qty' => 1,
-                            'is_in_stock' => 1,
-                            'qty' => $index['qty']
-                        )
-                    );
-                } else {
-                    $_product->setStockData(
-                        array (
-                            'use_config_manage_stock' => 0,
-                            'manage_stock' => 1,
-                            'min_sale_qty' => 1,
-                            'is_in_stock' => 0,
-                            'qty' => $index['qty']
-                        )
-                    );
-                }
+                $_product->setStockData(
+                    array (
+                        'use_config_manage_stock' => 0,
+                        'manage_stock' => 1,
+                        'min_sale_qty' => 1,
+                        'is_in_stock' => 1,
+                        'qty' => 100000
+                    )
+                );
                 $_product->save();
                 echo "Product Save - {$_product->getSku()} Done \n";
                 unset($product, $_product);

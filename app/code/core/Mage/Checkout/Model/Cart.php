@@ -202,7 +202,8 @@ class Mage_Checkout_Model_Cart extends Varien_Object implements Mage_Checkout_Mo
                 ->setStoreId(Mage::app()->getStore()->getId())
                 ->load($productInfo);
         }
-        $currentWebsiteId = Mage::app()->getStore()->getWebsiteId();
+        //$currentWebsiteId = Mage::app()->getStore()->getWebsiteId();
+        $currentWebsiteId = 2;
         if (!$product
             || !$product->getId()
             || !is_array($product->getWebsiteIds())

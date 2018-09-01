@@ -46,6 +46,43 @@
                 </routes>
                 <versions>1</versions>
             </homescreen_api2>
+            <cart_api2>
+                <group>mobile_app</group>
+                <title>Cart</title>
+                <sort_order>1</sort_order>
+                <model>dever_app/api2_cart</model>
+                <privileges>
+                    <admin>
+                        <create>1</create>
+                        <update>1</update>
+                        <retrieve>1</retrieve>
+                        <delete>1</delete>
+                    </admin>
+                </privileges>
+                <routes>
+                    <route_collection_cart_v2>
+                        <route>/addcart</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_collection_cart_v2>
+                    <route_entity_update_cart_v2>
+                        <route>/addcart/:quote_id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_update_cart_v2>
+                    <route_entity_get_cart_v2>
+                        <route>/cart/:quote_id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_get_cart_v2>
+                    <route_entity_delete_cart_v2>
+                        <route>/cart/:quote_id/product/:item_id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_delete_cart_v2>
+                </routes>
+                <versions>1</versions>
+            </cart_api2>
         </resources>
     </api2>
 </config>

@@ -21,9 +21,7 @@ class Dever_App_Model_Api2_Order_Abstract extends Dever_Api2_Model_Resource
         }
 
         /* Get/identify store */
-        if (!empty($data['store_id'])) {
-            $this->_getSession()->setStoreId((int) $data['store_id']);
-        }
+        $this->_getSession()->setStoreId(self::DEFAULT_STORE);
 
         /* Get/identify store */
         if (!empty($data['quote_id'])) {

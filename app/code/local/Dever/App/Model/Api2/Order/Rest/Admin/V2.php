@@ -53,7 +53,7 @@ class Dever_App_Model_Api2_Order_Rest_Admin_V2
                 //Delete Quote
                 if ($order->getIncrementId()) {
                     $quote = Mage::getModel("sales/quote")
-                        ->setStoreId($orderData['session']['store_id'])
+                        ->setStoreId(self::DEFAULT_STORE)
                         ->load($orderData['quote_id']);
                     $quote->delete();
                 }

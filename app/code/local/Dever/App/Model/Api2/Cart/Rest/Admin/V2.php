@@ -133,7 +133,6 @@ class Dever_App_Model_Api2_Cart_Rest_Admin_V2
                 //Check item already exists, update jus qty
                 /** @var Mage_Sales_Model_Quote $quote */
                 if ($quote->hasProductId($productId)) {
-                    //Remove Free Product if already exists and create fresh
                     foreach ($quote->getAllVisibleItems() as $item) {
                         if ($productId == $item->getProductId()) {
                             $info = array ('qty' => $qty);

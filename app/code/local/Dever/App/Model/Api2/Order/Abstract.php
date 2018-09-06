@@ -70,7 +70,7 @@ class Dever_App_Model_Api2_Order_Abstract extends Dever_Api2_Model_Resource
     protected function _buildOrderData($order)
     {
 
-        $date = date('Y-m-d H:i:s', strtotime($order->getCreatedAt(). ' + 330 mins'));
+        $date = date('Y-m-d H:i:s', strtotime($order->getCreatedAt(). ' + 240 mins'));
 
         $orderData = array (
             'order_number' => $order->getIncrementId(),
@@ -108,9 +108,7 @@ class Dever_App_Model_Api2_Order_Abstract extends Dever_Api2_Model_Resource
                 'qty'            => $qty,
                 'price'          => $item->getPrice(),
                 'base_price'     => $item->getBasePrice(),
-                'row_total'      => $item->getRowTotal(),
-                'thumbnail'      => $product->getThumbnail(),
-                'small_image'    => $product->getSmallImage()
+                'row_total'      => $item->getRowTotal()
             );
 
             $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($order->getCustomerId(), true);

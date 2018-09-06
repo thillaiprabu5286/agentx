@@ -63,7 +63,7 @@ class Dever_App_Model_Api2_Customer_Orders_Abstract extends Dever_Api2_Model_Res
         $indexData = $readAdapter->query($collectionSelect)->fetchAll();
 
         foreach ($indexData as $key => $each) {
-            $date = date('Y-m-d H:i:s', strtotime($each['ordered_date']. ' + 330 mins'));
+            $date = date('Y-m-d H:i:s', strtotime($each['ordered_date']. ' + 240 mins'));
             $indexData[$key]['ordered_date'] = $date;
         }
 

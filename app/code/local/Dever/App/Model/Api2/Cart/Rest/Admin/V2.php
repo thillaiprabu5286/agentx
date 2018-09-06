@@ -128,14 +128,23 @@ class Dever_App_Model_Api2_Cart_Rest_Admin_V2
             $quote = Mage::getModel('sales/quote')
                 ->setStoreId(self::DEFAULT_STORE)
                 ->load($quoteId);
-            foreach ($request['product'] as $productId => $qty)
+            foreach ($request['product'] as $productId => $details)
             {
                 //Check item already exists, update jus qty
                 /** @var Mage_Sales_Model_Quote $quote */
                 if ($quote->hasProductId($productId)) {
+
                     foreach ($quote->getAllVisibleItems() as $item) {
                         if ($productId == $item->getProductId()) {
-                            $info = array ('qty' => $qty);
+
+                            //add / replace actions
+                            if ($details['action'] == 'add') {
+                                $qty = $item->getQty() + $details['qty'];
+                                $info = array ('qty' => $qty);
+                            } elseif ($details['action'] == 'replace') {
+                                $info = array ('qty' => $details['qty']);
+                            }
+
                             $quote->updateItem(
                                 $item->getId(),
                                 new Varien_Object($info)
@@ -153,7 +162,7 @@ class Dever_App_Model_Api2_Cart_Rest_Admin_V2
                         ->setOriginalCustomPrice($this->_getFinalPrice($product))
                         ->setWeeeTaxApplied('a:0:{}')
                         ->setStoreId(self::DEFAULT_STORE)
-                        ->setQty($qty);
+                        ->setQty($details['qty']);
                     $quote->addItem($quoteItem);
                 }
             }

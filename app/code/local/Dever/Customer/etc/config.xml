@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Dever_Customer>
+            <version>0.0.1</version>
+        </Dever_Customer>
+    </modules>
+    <global>
+        <resources>
+            <dever_customer_setup>
+                <setup>
+                    <module>Dever_Customer</module>
+                    <class>Mage_Customer_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </dever_customer_setup>
+            <dever_customer_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </dever_customer_read>
+            <dever_customer_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </dever_customer_write>
+        </resources>
+    </global>
+</config>

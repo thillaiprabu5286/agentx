@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Dever_Sales>
+            <version>0.0.1</version>
+        </Dever_Sales>
+    </modules>
+    <global>
+        <helpers>
+            <dever_sales>
+                <class>Dever_Sales_Helper</class>
+            </dever_sales>
+        </helpers>
+        <blocks>
+            <dever_sales>
+                <class>Dever_Sales_Block</class>
+            </dever_sales>
+        </blocks>
+        <events>
+            <sales_order_save_after>
+                <observers>
+                    <trigger_fcm_status_change>
+                        <type>singleton</type>
+                        <class>dever_sales_model_observer</class>
+                        <method>triggerFcm</method>
+                    </trigger_fcm_status_change>
+                </observers>
+            </sales_order_save_after>
+        </events>
+    </global>
+</config>

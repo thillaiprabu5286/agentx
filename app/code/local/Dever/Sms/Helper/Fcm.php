@@ -18,10 +18,8 @@ class Dever_Sms_Helper_Fcm extends Mage_Core_Helper_Abstract
         return $this;
     }
 
-    public function sendSms($order, $fcmId, $message)
+    public function sendSms($fcmId, $message)
     {
-        // prep the bundle
-        //$message = "Message here";
         $msg = array (
             'body' 	=> $message,
             'title'		=> 'Agentx Order Update',

@@ -18,13 +18,13 @@ class Dever_Sales_Model_Observer
             case 'pending':
                 $message = "Dear {$customer->getName()}, Thanks for your Order. Your Order {$order->getIncrementId()} is submitted with AgentX team. 
                 We will get back to you shortly.";
-                $helper->sendSms($order, $fcmId, $message);
+                $helper->sendSms($fcmId, $message);
                 break;
             case 'accepted':
             case 'complete':
             case 'canceled':
                 $message = "Dear {$customer->getName()}, Your Order {$order->getIncrementId()} is currently in {$status} status.";
-                $helper->sendSms($order, $fcmId, $message);
+                $helper->sendSms($fcmId, $message);
                 break;
             default:
                 //Do Nothing

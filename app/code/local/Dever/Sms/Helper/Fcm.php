@@ -13,23 +13,18 @@ class Dever_Sms_Helper_Fcm extends Mage_Core_Helper_Abstract
 
     public function __construct()
     {
-        $this->_apiKey = 'AIzaSyBbsSv-InjTRTzsl7wXdBWb1q5sW1HfCNE';
+        $this->_apiKey = 'AIzaSyAt1f4jEW0VXl18XLd1wrzeBVMgwUitXDQ';
 
         return $this;
     }
 
-    public function sendSms($order)
+    public function sendSms($order, $fcmId, $message)
     {
-        //Get Customer Fcm
-        $customerId = $order->getCustomerId();
-        $customer = Mage::getModel('customer/customer')->load($customerId);
-        $fcmId = $customer->getFcmId();
-
         // prep the bundle
         //$message = "Message here";
         $msg = array (
             'body' 	=> $message,
-            'title'		=> 'Title',
+            'title'		=> 'Agentx Order Update',
             'vibrate'	=> 1,
             'sound'		=> 1,
             'largeIcon'	=> 'large_icon',

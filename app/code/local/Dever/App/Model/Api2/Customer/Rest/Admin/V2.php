@@ -31,6 +31,9 @@ class Dever_App_Model_Api2_Customer_Rest_Admin_V2
                     $token->createFromCustomer($customer);
                     $token->save();
 
+                    //Save Customer Model
+                    $customer->setFcmId($request['fcm_id'])->save();
+
                     return array(
                         'token_id'          => $token->getEntityId(),
                         'customer_id'       => $customer->getId(),

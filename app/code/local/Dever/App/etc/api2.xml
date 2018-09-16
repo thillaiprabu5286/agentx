@@ -92,6 +92,7 @@
                     <admin>
                         <create>1</create>
                         <retrieve>1</retrieve>
+                        <update>1</update>
                     </admin>
                 </privileges>
                 <routes>

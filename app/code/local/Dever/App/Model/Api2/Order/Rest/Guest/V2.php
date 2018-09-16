@@ -1,7 +1,7 @@
 <?php
 
 
-class Dever_App_Model_Api2_Order_Rest_Admin_V2
+class Dever_App_Model_Api2_Order_Rest_Guest_V2
     extends Dever_App_Model_Api2_Order_Abstract
 {
     public function _create(array $request)
@@ -137,63 +137,25 @@ class Dever_App_Model_Api2_Order_Rest_Admin_V2
         }
     }
 
-    /**
-     * Attempt to edit existing order items
-     *
-     * @param array $orderData
-     * @return array|void
-     * @throws Exception
-     */
     public function _update($orderData)
     {
-        $orderId = $this->getRequest()->getParam('id');
         if (!empty($orderData)) {
+
+
             try {
+
                 //Load order by incrementid
-                /** @var Mage_Sales_Model_Order $order */
-                $order = Mage::getModel('sales/order')->load($orderId);
-                foreach($order->getAllItems() as $item) {
-                    $item->delete();
+                /** @var Mage_Sales_Model_Order $orderModel */
+                $orderModel = Mage::getModel('sales/order')->loadByIncrementId($orderData['order_id']);
+                foreach ($orderModel->getAllItems() as $item) {
+                    $item->isDeleted(true);
                 }
+                $orderModel->save();
 
-                $total = 0;
-                foreach ($orderData['items'] as $id => $qty)
-                {
-                    $product = Mage::getModel('catalog/product')->load($id);
-                    $rowTotal = ($product->getPrice() * $qty);
-                    /** @var Mage_Sales_Model_Order_Item $orderItem */
-                    $orderItem = Mage::getModel('sales/order_item');
-                    $orderItem->setStoreId(self::DEFAULT_STORE)
-                        ->setQuoteItemId(NULL)
-                        ->setQuoteParentItemId(NULL)
-                        ->setProductId($product->getId())
-                        ->setProductType($product->getTypeId())
-                        ->setQtyBackordered(NULL)
-                        ->setTotalQtyOrdered($qty)
-                        ->setQtyOrdered($qty)
-                        ->setName($product->getName())
-                        ->setSku($product->getSku())
-                        ->setPrice($product->getPrice())
-                        ->setBasePrice($product->getPrice())
-                        ->setOriginalPrice($product->getPrice())
-                        ->setRowTotal($rowTotal)
-                        ->setBaseRowTotal($rowTotal)
-                        ->setOrder($order);
-                    $orderItem->save();
-                    $total += $rowTotal;
-                }
-
-                $order->setSubtotal($total)
-                    ->setBaseSubtotal($total)
-                    ->setGrandTotal($total)
-                    ->setBaseGrandTotal($total);
-
-                if ($order->save()) {
-                    $response = array (
-                        'status' => "success",
-                        'message' => "Order {$order->getIncrementId()} Edit Success"
-                    );
-                }
+                /*$response = array (
+                    'status' => "success",
+                    'message' => "Order {$order->getIncrementId()} Created Successfully"
+                );*/
 
             } catch (Exception $e){
 

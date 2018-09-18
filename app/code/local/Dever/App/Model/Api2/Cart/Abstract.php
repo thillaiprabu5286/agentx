@@ -23,42 +23,43 @@ class Dever_App_Model_Api2_Cart_Abstract extends Dever_Api2_Model_Resource
             'tax_amount'                    => $quote->getShippingAddress()->getTaxAmount()
         ));
 
-        $productIds = array();
-        foreach ($quote->getAllVisibleItems() as $item) {
-            $productIds[] = $item->getProductId();
-        }
+        if (empty($quote->getAllVisibleItems()) || $quote->getAllVisibleItems() == '') {
+            $quoteData['items'][] = array();
+        } else {
+            foreach ($quote->getAllVisibleItems() as $item) {
 
-        foreach ($quote->getAllVisibleItems() as $item) {
+                $product = Mage::getModel('catalog/product')->load($item->getProductId());
 
-            $product = Mage::getModel('catalog/product')->load($item->getProductId());
+                $itemData = array(
+                    'item_id'        => $item->getItemId(),
+                    'product_id'     => $item->getProductId(),
+                    'product_sku'    => $item->getSku(),
+                    'product_name'   => $item->getName(),
+                    'qty'            => $item->getQty(),
+                    'price'          => $item->getPrice(),
+                    'base_price'     => $item->getBasePrice(),
+                    'row_total'      => $item->getRowTotal(),
+                    'thumbnail'      => $product->getThumbnail(),
+                    'small_image'    => $product->getSmallImage(),
+                    'supplier'      => $product->getAttributeText('supplier')
+                );
 
-            $itemData = array(
-                'item_id'        => $item->getItemId(),
-                'product_id'     => $item->getProductId(),
-                'product_sku'    => $item->getSku(),
-                'product_name'   => $item->getName(),
-                'qty'            => $item->getQty(),
-                'price'          => $item->getPrice(),
-                'base_price'     => $item->getBasePrice(),
-                'row_total'      => $item->getRowTotal(),
-                'thumbnail'      => $product->getThumbnail(),
-                'small_image'    => $product->getSmallImage()
-            );
+                $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($quote->getCustomerId(), true);
+                $collection = Mage::getModel('wishlist/item')->getCollection()
+                    ->addFieldToFilter('store_id', $quote->getStoreId())
+                    ->addFieldToFilter('wishlist_id', $wishlist->getId())
+                    ->addFieldToFilter('product_id', $item->getProductId());
+                $item = $collection->getFirstItem();
+                $isWishlist = 0;
+                if ($item->getId()) {
+                    $isWishlist = 1;
+                }
+                $itemData['is_wishlist'] = $isWishlist;
 
-            $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($quote->getCustomerId(), true);
-            $collection = Mage::getModel('wishlist/item')->getCollection()
-                ->addFieldToFilter('store_id', $quote->getStoreId())
-                ->addFieldToFilter('wishlist_id', $wishlist->getId())
-                ->addFieldToFilter('product_id', $item->getProductId());
-            $item = $collection->getFirstItem();
-            $isWishlist = 0;
-            if ($item->getId()) {
-                $isWishlist = 1;
+                $quoteData['items'][] = $itemData;
             }
-            $itemData['is_wishlist'] = $isWishlist;
-
-            $quoteData['items'][] = $itemData;
         }
+
 
         // Add address info into quote data
         $quoteData['customer'] = array (

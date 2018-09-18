@@ -24,7 +24,7 @@ class Dever_App_Model_Api2_Cart_Abstract extends Dever_Api2_Model_Resource
         ));
 
         if (empty($quote->getAllVisibleItems()) || $quote->getAllVisibleItems() == '') {
-            $quoteData['items'][] = array();
+            $quoteData['items'] = array();
         } else {
             foreach ($quote->getAllVisibleItems() as $item) {
 

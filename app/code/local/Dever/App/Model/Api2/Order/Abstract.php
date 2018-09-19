@@ -101,14 +101,15 @@ class Dever_App_Model_Api2_Order_Abstract extends Dever_Api2_Model_Resource
             $qty = floatval($item->getQtyOrdered());
 
             $itemData = array(
-                'item_id'        => $item->getItemId(),
-                'product_id'     => $item->getProductId(),
-                'product_sku'    => $item->getSku(),
-                'product_name'   => $item->getName(),
-                'qty'            => $qty,
-                'price'          => $item->getPrice(),
-                'base_price'     => $item->getBasePrice(),
-                'row_total'      => $item->getRowTotal()
+                'item_id' => $item->getItemId(),
+                'product_id' => $item->getProductId(),
+                'product_sku' => $item->getSku(),
+                'product_name' => $item->getName(),
+                'qty' => $qty,
+                'price' => $item->getPrice(),
+                'base_price' => $item->getBasePrice(),
+                'row_total' => $item->getRowTotal(),
+                'supplier' => $product->getAttributeText('supplier')
             );
 
             $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($order->getCustomerId(), true);

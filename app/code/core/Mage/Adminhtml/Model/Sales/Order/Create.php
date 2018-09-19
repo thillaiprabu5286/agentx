@@ -1305,10 +1305,34 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object implements M
 
         if (isset($data['billing_address'])) {
             $this->setBillingAddress($data['billing_address']);
+        } else {
+            $addr = array (
+                'firstname' => 'Firstname',
+                'lastname' => 'Lastname',
+                'street' => 'Dummy Street',
+                'city' => 'Dummy City',
+                'country_id' => 'AE',
+                'region' => 'Dubai',
+                'postcode' => '00001',
+                'telephone' => '1234567890'
+            );
+            $this->setBillingAddress($addr);
         }
 
         if (isset($data['shipping_address'])) {
             $this->setShippingAddress($data['shipping_address']);
+        } else {
+            $addr = array (
+                'firstname' => 'Firstname',
+                'lastname' => 'Lastname',
+                'street' => 'Dummy Street',
+                'city' => 'Dummy City',
+                'country_id' => 'AE',
+                'region' => 'Dubai',
+                'postcode' => '00001',
+                'telephone' => '1234567890'
+            );
+            $this->setShippingAddress($addr);
         }
 
         if (isset($data['shipping_method'])) {

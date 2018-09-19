@@ -34,11 +34,17 @@ class Dever_App_Model_Api2_Customer_Rest_Admin_V2
                     //Save Customer Model
                     $customer->setFcmId($request['fcm_id'])->save();
 
+                    //Load Customer Model to get address
+                    /** @var Mage_Customer_Model_Customer $_customer */
+                    $_customer = $customer->load($customer->getId());
+                    $sAddress = $_customer->getDefaultShippingAddress();
+
                     return array(
                         'token_id'          => $token->getEntityId(),
                         'customer_id'       => $customer->getId(),
                         'token'             => $token->getToken(),
                         'secret'            => $token->getSecret(),
+                        'address' => $sAddress->getData()
                     );
                 }
             } catch (Mage_Core_Exception $e) {

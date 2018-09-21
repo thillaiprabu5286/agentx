@@ -2,10 +2,13 @@
 <config>
     <modules>
         <Dever_Customer>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </Dever_Customer>
     </modules>
     <global>
+        <models>
+            <class>Dever_Customer_Model</class>
+        </models>
         <resources>
             <dever_customer_setup>
                 <setup>

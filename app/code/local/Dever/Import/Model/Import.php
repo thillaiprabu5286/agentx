@@ -9,7 +9,6 @@ class Dever_Import_Model_Import extends Mage_Core_Model_Abstract
 {
     public function saveProductOptions($data)
     {
-        $debug = true;
         /** @var Dever_Import_Helper_Import $helper */
         $helper = Mage::helper('dever_import/import');
 
@@ -153,9 +152,7 @@ class Dever_Import_Model_Import extends Mage_Core_Model_Abstract
             file_put_contents($filepath, file_get_contents(trim($imgUrl)));
             $mediaAttribute = array('thumbnail', 'small_image', 'image');
             $obj = $product->addImageToMediaGallery($filepath, $mediaAttribute, false, false);
-            if ($obj) {
-                echo "......Product Image uploaded {$filepath}\n";
-            } else {
+            if (!$obj) {
                 return false;
             }
         }

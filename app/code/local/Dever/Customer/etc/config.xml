@@ -7,7 +7,9 @@
     </modules>
     <global>
         <models>
-            <class>Dever_Customer_Model</class>
+            <dever_customer>
+                <class>Dever_Customer_Model</class>
+            </dever_customer>
         </models>
         <resources>
             <dever_customer_setup>
@@ -31,4 +33,17 @@
             </dever_customer_write>
         </resources>
     </global>
+    <adminhtml>
+        <events>
+            <customer_save_before>
+                <observers>
+                    <validate_retailstore>
+                        <type>singleton</type>
+                        <class>Dever_Customer_Model_Observer</class>
+                        <method>validateRetailstore</method>
+                    </validate_retailstore>
+                </observers>
+            </customer_save_before>
+        </events>
+    </adminhtml>
 </config>

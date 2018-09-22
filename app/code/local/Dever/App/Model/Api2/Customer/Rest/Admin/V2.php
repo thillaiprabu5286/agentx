@@ -41,14 +41,26 @@ class Dever_App_Model_Api2_Customer_Rest_Admin_V2
 
                     $userName = $_customer->getFirstname() . ' ' . $_customer->getLastname();
 
-                    return array(
-                        'token_id' => $token->getEntityId(),
-                        'customer_id' => $customer->getId(),
-                        'name' => $userName,
-                        'token' => $token->getToken(),
-                        'secret' => $token->getSecret(),
-                        'address' => $sAddress->getData()
-                    );
+                    if (empty($sAddress)) {
+                        return array(
+                            'token_id' => $token->getEntityId(),
+                            'customer_id' => $customer->getId(),
+                            'name' => $userName,
+                            'token' => $token->getToken(),
+                            'secret' => $token->getSecret(),
+                            'address' => null
+                        );
+                    } else {
+                        return array(
+                            'token_id' => $token->getEntityId(),
+                            'customer_id' => $customer->getId(),
+                            'name' => $userName,
+                            'token' => $token->getToken(),
+                            'secret' => $token->getSecret(),
+                            'address' => $sAddress->getData()
+                        );
+                    }
+
                 }
             } catch (Mage_Core_Exception $e) {
                 switch ($e->getCode()) {

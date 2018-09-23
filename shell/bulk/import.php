@@ -33,7 +33,7 @@ class Dever_Shell_Bulk_Import extends Mage_Shell_Abstract
     public function run()
     {
         ini_set('memory_limit', '2G');
-        $this->saveProductOptions();
+        //$this->saveProductOptions();
         $this->saveProduct();
     }
 

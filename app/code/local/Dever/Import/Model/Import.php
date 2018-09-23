@@ -72,65 +72,60 @@ class Dever_Import_Model_Import extends Mage_Core_Model_Abstract
     public function saveProduct($index, $mediaDir)
     {
         try {
-
             /** @var Mage_Catalog_Model_Product $product */
             $product = Mage::getModel('catalog/product');
-            $product->load(null);
+            $productId = $product->getIdBySku($index['sku']);
+            if (empty($productId) || $product == '') {
+                $product->load(null);
+                $product->setSku($index['sku'])
+                    ->setTypeId('simple')
+                    ->setWeight(1)
+                    ->setWebsiteIds(array(2))
+                    ->setAttributeSetId(4)
+                    ->setCreatedAt(strtotime('now'))
+                    ->setTaxClassId(4)
+                    ->setVisibility(Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH)
+                    ->setName($index['name'])
+                    ->setDescription($index['name'])
+                    ->setShortDescription($index['name'])
+                    ->setStatus(1);
 
-            // Basic product details
-            if (empty($index['sku'])) {
-                throw new Exception("\t Skip row - Missing sku \n");
-            }
-            $product
-                ->setSku($index['sku'])
-                ->setTypeId('simple')
-                ->setWeight(1)
-                ->setWebsiteIds(array(2))
-                ->setAttributeSetId(4)
-                ->setCreatedAt(strtotime('now'))
-                ->setTaxClassId(4)
-                ->setVisibility(Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH)
-                ->setName($index['name'])
-                ->setDescription($index['name'])
-                ->setShortDescription($index['name'])
-                ->setStatus(1);
+                if ($index['category']) {
+                    //Get Category Id by name
+                    $category = Mage::getModel('catalog/category')
+                        ->getCollection()
+                        ->addAttributeToFilter('name', $index['category'])
+                        ->getFirstItem();
+                    $categoryIds = explode('/', $category->getId());
+                    $product->setCategoryIds($categoryIds);
+                    unset($index['category']);
+                }
 
-            if ($index['category']) {
-                //Get Category Id by name
-                $category = Mage::getModel('catalog/category')
-                    ->getCollection()
-                    ->addAttributeToFilter('name', $index['category'])
-                    ->getFirstItem();
-                $categoryIds = explode('/', $category->getId());
-                $product->setCategoryIds($categoryIds);
-                unset($index['category']);
-            }
+                if ($index['images']) {
+                    $this->addImages($product, $index['images'], $mediaDir);
+                    unset($index['images']);
+                }
 
-            if ($index['images']) {
-                $this->addImages($product, $index['images'], $mediaDir);
-                unset($index['images']);
-            }
-
-            //Price fields
-            $product->setPrice(1);
-            $product->setCost(1);
-
-            $product->addData($index);
-            if ($product->save()) {
-                //Stock Data
-                $_product = Mage::getModel('catalog/product')->load($product->getId());
-                $_product->setStockData(
-                    array (
-                        'use_config_manage_stock' => 0,
-                        'manage_stock' => 1,
-                        'min_sale_qty' => 1,
-                        'is_in_stock' => 1,
-                        'qty' => 100000
-                    )
-                );
-                $_product->save();
-                echo "Product Save - {$_product->getSku()} Done \n";
-                unset($product, $_product);
+                //Price fields
+                $product->setPrice(1);
+                $product->setCost(1);
+                $product->addData($index);
+                if ($product->save()) {
+                    //Stock Data
+                    $_product = Mage::getModel('catalog/product')->load($product->getId());
+                    $_product->setStockData(
+                        array (
+                            'use_config_manage_stock' => 0,
+                            'manage_stock' => 1,
+                            'min_sale_qty' => 1,
+                            'is_in_stock' => 1,
+                            'qty' => 100000
+                        )
+                    );
+                    $_product->save();
+                    echo "Product Save - {$_product->getSku()} Done \n";
+                    unset($product, $_product);
+                }
             }
 
         } catch (Exception $e) {

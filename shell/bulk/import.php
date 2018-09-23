@@ -10,7 +10,7 @@ require_once '../abstract.php';
 
 require_once '../simplexlsx.class.php';
 
-class Dever_Shell_Import_Import extends Mage_Shell_Abstract
+class Dever_Shell_Bulk_Import extends Mage_Shell_Abstract
 {
     protected $_processData = null;
 
@@ -34,13 +34,11 @@ class Dever_Shell_Import_Import extends Mage_Shell_Abstract
     {
         ini_set('memory_limit', '2G');
         $this->saveProductOptions();
-        $this->prepareDataForImport();
         $this->saveProduct();
     }
 
     public function saveProductOptions()
     {
-        $debug = true;
         /** @var Dever_Import_Model_Import $model */
         $model = Mage::getModel('dever_import/import');
         try {
@@ -53,8 +51,6 @@ class Dever_Shell_Import_Import extends Mage_Shell_Abstract
                         $csvHeaders = $lines;
                     } else {
                         $arrayCombined = array_combine($csvHeaders, $lines);
-                        //print_r($arrayCombined);
-                        //exit;
                         $model->saveProductOptions($arrayCombined);
                     }
                     echo "Row {$i} \n";
@@ -68,7 +64,7 @@ class Dever_Shell_Import_Import extends Mage_Shell_Abstract
         }
     }
 
-    public function prepareDataForImport()
+    public function saveProduct()
     {
         /** @var Dever_Import_Model_Import $model */
         $model = Mage::getModel('dever_import/import');
@@ -76,7 +72,7 @@ class Dever_Shell_Import_Import extends Mage_Shell_Abstract
             if ($this->_processData) {
                 $csvHeaders = array();
                 $importData = array();
-                echo "--Prepare Product key pair ...\n";
+                echo "--Prepare Product Save ...\n";
                 $i = 1;
                 foreach ($this->_processData as $key => $lines)
                 {
@@ -86,14 +82,11 @@ class Dever_Shell_Import_Import extends Mage_Shell_Abstract
                     } else {
                         //print_r($csvHeaders);
                         $arrayCombined = array_combine($csvHeaders, $lines);
-                        $importData[] = $model->prepareDataForImport($arrayCombined);
+                        $data = $model->prepareDataForImport($arrayCombined);
+                        $model->saveProduct($data, $this->getArg('mediaDir'));
                     }
-                    echo "Row {$i} \n";
-                    $i++;
-                    //print_r($arrayCombined);
-                    //exit;
                 }
-                echo "--End Product Key pair ...\n";
+                echo "--End Product Save ...\n";
                 //exit;
                 $this->_importData = $importData;
             }
@@ -101,30 +94,7 @@ class Dever_Shell_Import_Import extends Mage_Shell_Abstract
             echo (string)$e->getMessage();
         }
     }
-
-    public function saveProduct()
-    {
-        try {
-            if ($importData = $this->_importData) {
-                /** @var Dever_Import_Model_Import $model */
-                $model = Mage::getModel('dever_import/import');
-                echo "--Prepare Product Save ...\n";
-                $i = 1;
-                foreach ($importData as $data)
-                {
-                    $model->saveProduct($data, $this->getArg('mediaDir'));
-                    echo "Row {$i} \n";
-                    $i++;
-
-                }
-                echo "--End Product Save ...\n";
-
-            }
-        } catch (Exception $e) {
-            echo (string)$e->getMessage();
-        }
-    }
 }
 
-$obj = new Dever_Shell_Import_Import();
+$obj = new Dever_Shell_Bulk_Import();
 $obj->run();

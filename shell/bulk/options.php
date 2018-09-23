@@ -10,11 +10,9 @@ require_once '../abstract.php';
 
 require_once '../simplexlsx.class.php';
 
-class Dever_Shell_Bulk_Import extends Mage_Shell_Abstract
+class Dever_Shell_Save_Options extends Mage_Shell_Abstract
 {
     protected $_processData = null;
-
-    protected $_importData = null;
 
     public function _construct()
     {
@@ -33,34 +31,30 @@ class Dever_Shell_Bulk_Import extends Mage_Shell_Abstract
     public function run()
     {
         ini_set('memory_limit', '2G');
-        $this->saveProduct();
+        $this->saveProductOptions();
     }
 
-    public function saveProduct()
+    public function saveProductOptions()
     {
         /** @var Dever_Import_Model_Import $model */
         $model = Mage::getModel('dever_import/import');
         try {
             if ($this->_processData) {
                 $csvHeaders = array();
-                $importData = array();
-                echo "--Prepare Product Save ...\n";
+                echo "--Prepare Product options ...\n";
                 $i = 1;
-                foreach ($this->_processData as $key => $lines)
-                {
-                    //print_r($lines);
+                foreach ($this->_processData as $key => $lines) {
                     if ($key == 0) {
                         $csvHeaders = $lines;
                     } else {
-                        //print_r($csvHeaders);
                         $arrayCombined = array_combine($csvHeaders, $lines);
-                        $data = $model->prepareDataForImport($arrayCombined);
-                        $model->saveProduct($data, $this->getArg('mediaDir'));
+                        $model->saveProductOptions($arrayCombined);
                     }
+                    echo "Row {$i} \n";
+                    $i++;
                 }
-                echo "--End Product Save ...\n";
-                //exit;
-                $this->_importData = $importData;
+                echo "--End Product options ...\n";
+
             }
         } catch (Exception $e) {
             echo (string)$e->getMessage();
@@ -68,5 +62,5 @@ class Dever_Shell_Bulk_Import extends Mage_Shell_Abstract
     }
 }
 
-$obj = new Dever_Shell_Bulk_Import();
+$obj = new Dever_Shell_Save_Options();
 $obj->run();

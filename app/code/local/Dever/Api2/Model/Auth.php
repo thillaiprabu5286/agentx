@@ -47,7 +47,6 @@ class Dever_Api2_Model_Auth
      */
     public function authenticate(Mage_Api2_Model_Request $request)
     {
-        $debug = true;
         /** @var $helper Mage_Api2_Helper_Data */
         $helper    = Mage::helper('api2/data');
         $userTypes = $helper->getUserTypes();

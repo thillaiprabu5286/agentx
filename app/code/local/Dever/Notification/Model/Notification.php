@@ -7,4 +7,13 @@ class Dever_Notification_Model_Notification extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('dever_notification/notification');
     }
+
+    public function loadByFcm($id)
+    {
+        $collection = $this->getCollection()
+            ->addFieldToFilter('fcm_id', $id)
+            ->load();
+
+        return $collection->getData();
+    }
 }

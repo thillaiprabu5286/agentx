@@ -4,6 +4,7 @@ class Dever_Sales_Model_Observer
 {
     public function triggerFcm($observer)
     {
+        $debug = true;
         $order = $observer->getEvent()->getOrder();
 
         /** @var Dever_Sms_Helper_Fcm $helper */
@@ -31,7 +32,7 @@ class Dever_Sales_Model_Observer
         }
 
         //Trigger Notification Event to log messages
-        $data = array (
+        $notification = array (
             'fcm_id' => $fcmId,
             'customer_id' => $customerId,
             'name' => $customer->getFirstname() . ' ' . $customer->getLastname(),
@@ -39,6 +40,6 @@ class Dever_Sales_Model_Observer
             'message' => $message,
             'created_date' => date('Y-m-d H:i:s')
         );
-        Mage::dispatchEvent('log_notification_messages', array('data' => $data));
+        Mage::dispatchEvent('log_notification_messages', array('notification' => $notification));
     }
 }

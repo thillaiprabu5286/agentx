@@ -16,7 +16,7 @@ $_tbl = $this->getConnection()
         'primary'   => true,
         'unsigned'  => true,
     ), 'ID')
-    ->addColumn('fcm_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(
+    ->addColumn('fcm_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
         'nullable'  => true,
     ), 'FCM Id')
     ->addColumn('customer_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(

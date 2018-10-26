@@ -29,5 +29,16 @@ class Dever_Sales_Model_Observer
             default:
                 //Do Nothing
         }
+
+        //Trigger Notification Event to log messages
+        $data = array (
+            'fcm_id' => $fcmId,
+            'customer_id' => $customerId,
+            'name' => $customer->getFirstname() . ' ' . $customer->getLastname(),
+            'email' => $customer->getEmail(),
+            'message' => $message,
+            'created_date' => date('Y-m-d H:i:s')
+        );
+        Mage::dispatchEvent('log_notification_messages', array('data' => $data));
     }
 }

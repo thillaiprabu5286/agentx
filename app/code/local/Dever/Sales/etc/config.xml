@@ -16,6 +16,11 @@
                 <class>Dever_Sales_Block</class>
             </dever_sales>
         </blocks>
+        <models>
+            <dever_sales>
+                <class>Dever_Sales_Model</class>
+            </dever_sales>
+        </models>
         <events>
             <sales_order_save_after>
                 <observers>

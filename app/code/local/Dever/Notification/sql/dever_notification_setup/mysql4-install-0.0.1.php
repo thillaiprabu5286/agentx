@@ -32,8 +32,7 @@ $_tbl = $this->getConnection()
         'nullable'  => true,
     ), 'Message')
     ->addColumn('created_date', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
-        'nullable'  => true,
-        'default'   => 0
+        'nullable'  => true
     ), 'Created Date')
     ->setComment('Notification List')
 ;

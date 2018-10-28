@@ -43,6 +43,7 @@ class Cmsmart_AdminTheme_Block_Adminhtml_Block_Dashboard_Orders_Grid extends Mag
 
     protected function _prepareCollection()
     {
+        $debug = true;
         if (!Mage::helper('core')->isModuleEnabled('Mage_Reports')) {
             return $this;
         }
@@ -67,6 +68,7 @@ class Cmsmart_AdminTheme_Block_Adminhtml_Block_Dashboard_Orders_Grid extends Mag
             $collection->addRevenueToSelect(true);
         }
 
+        $str = (string)$collection->getSelect();
         $this->setCollection($collection);
 
         return parent::_prepareCollection();

@@ -166,7 +166,7 @@
                 </privileges>
                 <routes>
                     <route_collection_customer_notification>
-                        <route>/customer/:fcmid</route>
+                        <route>/customer/:customerid</route>
                         <action_type>collection</action_type>
                         <version>2</version>
                     </route_collection_customer_notification>

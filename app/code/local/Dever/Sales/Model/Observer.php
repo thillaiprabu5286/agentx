@@ -4,7 +4,6 @@ class Dever_Sales_Model_Observer
 {
     public function triggerFcm($observer)
     {
-        $debug = true;
         $order = $observer->getEvent()->getOrder();
 
         /** @var Dever_Sms_Helper_Fcm $helper */
@@ -19,27 +18,28 @@ class Dever_Sales_Model_Observer
             case 'pending':
                 $message = "Dear {$customer->getName()}, Thanks for your Order. Your Order {$order->getIncrementId()} is submitted with AgentX team. 
                 We will get back to you shortly.";
-                $helper->sendSms($fcmId, $message);
                 break;
             case 'accepted':
             case 'complete':
             case 'canceled':
                 $message = "Dear {$customer->getName()}, Your Order {$order->getIncrementId()} is currently in {$status} status.";
-                $helper->sendSms($fcmId, $message);
                 break;
             default:
                 //Do Nothing
         }
 
-        //Trigger Notification Event to log messages
-        $notification = array (
-            'fcm_id' => $fcmId,
-            'customer_id' => $customerId,
-            'name' => $customer->getFirstname() . ' ' . $customer->getLastname(),
-            'email' => $customer->getEmail(),
-            'message' => $message,
-            'created_date' => date('Y-m-d H:i:s')
-        );
-        Mage::dispatchEvent('log_notification_messages', array('notification' => $notification));
+        if ($message) {
+            $helper->sendSms($fcmId, $message);
+            //Trigger Notification Event to log messages
+            $notification = array(
+                'fcm_id' => $fcmId,
+                'customer_id' => $customerId,
+                'name' => $customer->getFirstname() . ' ' . $customer->getLastname(),
+                'email' => $customer->getEmail(),
+                'message' => $message,
+                'created_date' => date('Y-m-d H:i:s')
+            );
+            Mage::dispatchEvent('log_notification_messages', array('notification' => $notification));
+        }
     }
 }

@@ -13,7 +13,7 @@ class Dever_Sms_Helper_Fcm extends Mage_Core_Helper_Abstract
 
     public function __construct()
     {
-        $this->_apiKey = 'AIzaSyAt1f4jEW0VXl18XLd1wrzeBVMgwUitXDQ';
+        $this->_apiKey = 'AIzaSyAHPG9ibkDceJUVXez5xr9iIuLZgBm7ruI';
 
         return $this;
     }

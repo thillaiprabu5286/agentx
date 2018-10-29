@@ -6,6 +6,14 @@ class Dever_Sales_Model_Observer
     {
         $debug = true;
         $order = $observer->getEvent()->getOrder();
+
+        $status = $order->getStatus();
+        $originalData = $order->getOrigData();
+        $previousStatus = $originalData['status'];
+        if ($status == $previousStatus) {
+            return;
+        }
+
         /** @var Dever_Sms_Helper_Fcm $helper */
         $helper = Mage::helper('dever_sms/fcm');
         $customerId = $order->getCustomerId();
@@ -13,8 +21,8 @@ class Dever_Sales_Model_Observer
         $list = $customer->getFcmId();
         $listArr = explode(',',$list);
         foreach ($listArr as $fcmId) {
-            $status = uc_words($order->getStatus());
-            switch ($order->getStatus()) {
+            $status = uc_words($status);
+            switch ($status) {
                 case 'pending':
                     $message = "Dear {$customer->getName()}, Thanks for your Order. Your Order {$order->getIncrementId()} is submitted with AgentX team. 
                 We will get back to you shortly.";

@@ -9,7 +9,6 @@ class Dever_Notification_Model_Observer
 {
     public function logNotification($observer)
     {
-        $debug = true;
         $data = $observer->getEvent()->getNotification();
         /** @var Dever_Notification_Model_Notification $model */
         $model = Mage::getModel('dever_notification/notification');

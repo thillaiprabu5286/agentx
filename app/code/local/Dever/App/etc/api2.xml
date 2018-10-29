@@ -173,6 +173,25 @@
                 </routes>
                 <versions>1</versions>
             </customer_notification_list_api2>
+            <customer_fcm_api2>
+                <group>mobile_app</group>
+                <title>Customer Fcm</title>
+                <sort_order>1</sort_order>
+                <model>dever_app/api2_customer_fcm</model>
+                <privileges>
+                    <admin>
+                        <delete>1</delete>
+                    </admin>
+                </privileges>
+                <routes>
+                    <route_entity_customer_fcm>
+                        <route>/customer/:customerid/fcm/:fcmid</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_customer_fcm>
+                </routes>
+                <versions>1</versions>
+            </customer_fcm_api2>
         </resources>
     </api2>
 </config>

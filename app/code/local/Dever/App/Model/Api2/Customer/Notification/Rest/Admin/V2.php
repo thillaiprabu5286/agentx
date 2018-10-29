@@ -11,7 +11,7 @@ class Dever_App_Model_Api2_Customer_Notification_Rest_Admin_V2
     protected function _retrieveCollection()
     {
         $customerId = $this->getRequest()->getParam('customerid');
-        if (empty($fcmid)) {
+        if (empty($customerId)) {
             $this->_critical(self::RESOURCE_NOT_FOUND);
         }
         try {

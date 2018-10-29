@@ -43,7 +43,6 @@ class Cmsmart_AdminTheme_Block_Adminhtml_Block_Dashboard_Orders_Grid extends Mag
 
     protected function _prepareCollection()
     {
-        $debug = true;
         if (!Mage::helper('core')->isModuleEnabled('Mage_Reports')) {
             return $this;
         }
@@ -68,7 +67,6 @@ class Cmsmart_AdminTheme_Block_Adminhtml_Block_Dashboard_Orders_Grid extends Mag
             $collection->addRevenueToSelect(true);
         }
 
-        $str = (string)$collection->getSelect();
         $this->setCollection($collection);
 
         return parent::_prepareCollection();
@@ -126,15 +124,12 @@ class Cmsmart_AdminTheme_Block_Adminhtml_Block_Dashboard_Orders_Grid extends Mag
             'index'     => 'items_count',
         ));
 
-        $baseCurrencyCode = Mage::app()->getStore((int)$this->getParam('store'))->getBaseCurrencyCode();
-
-        $this->addColumn('total', array(
-            'header'    => $this->__('Grand Total'),
+        $this->addColumn('total_qty_ordered', array(
+            'header'    => $this->__('Total Qty'),
             'align'     => 'right',
+            'type'      => 'number',
             'sortable'  => false,
-            'type'      => 'currency',
-            'currency_code'  => $baseCurrencyCode,
-            'index'     => 'revenue',
+            'index'     => 'total_qty_ordered',
         ));
 
         $this->addColumn('action', array(

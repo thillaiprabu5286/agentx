@@ -27,7 +27,7 @@
                     <trigger_fcm_new_order>
                         <type>singleton</type>
                         <class>dever_sales_model_observer</class>
-                        <method>triggerFcm</method>
+                        <method>triggerFcmNewOrder</method>
                     </trigger_fcm_new_order>
                 </observers>
             </sales_model_service_quote_submit_success>
@@ -36,7 +36,7 @@
                     <trigger_fcm_status_change>
                         <type>singleton</type>
                         <class>dever_sales_model_observer</class>
-                        <method>triggerFcm</method>
+                        <method>triggerFcmStatusChange</method>
                     </trigger_fcm_status_change>
                 </observers>
             </sales_order_save_after>

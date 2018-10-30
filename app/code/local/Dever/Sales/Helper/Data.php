@@ -24,7 +24,7 @@ class Dever_Sales_Helper_Data extends Mage_Core_Helper_Abstract
             'name' => $customer->getFirstname() . ' ' . $customer->getLastname(),
             'email' => $customer->getEmail(),
             'message' => $message,
-            'created_date' => date('Y-m-d H:i:s')
+            'created_date' => date('Y-m-d H:i:s', strtotime($order->getCreatedAt(). ' + 240 mins'))
         );
         Mage::dispatchEvent('log_notification_messages', array('notification' => $notification));
         //Mage::log("End Fcm Trigger",null,"fcm.log");

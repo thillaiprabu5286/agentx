@@ -22,6 +22,15 @@
             </dever_sales>
         </models>
         <events>
+            <sales_model_service_quote_submit_success>
+                <observers>
+                    <trigger_fcm_new_order>
+                        <type>singleton</type>
+                        <class>dever_sales_model_observer</class>
+                        <method>triggerFcm</method>
+                    </trigger_fcm_new_order>
+                </observers>
+            </sales_model_service_quote_submit_success>
             <sales_order_save_after>
                 <observers>
                     <trigger_fcm_status_change>

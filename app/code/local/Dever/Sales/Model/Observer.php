@@ -15,14 +15,14 @@ class Dever_Sales_Model_Observer
         foreach ($listArr as $fcmId) {
             $status = uc_words($status);
             switch ($status) {
-                case 'pending':
+                case 'Pending':
                     $message = "Dear {$customer->getName()}, Thanks for your Order. Your Order {$order->getIncrementId()} is submitted with AgentX team. 
                 We will get back to you shortly.";
                     $helper->sendSms($fcmId, $message);
                     break;
-                case 'accepted':
-                case 'complete':
-                case 'canceled':
+                case 'Accepted':
+                case 'Complete':
+                case 'Canceled':
                     $message = "Dear {$customer->getName()}, Your Order {$order->getIncrementId()} is currently in {$status} status.";
                     $helper->sendSms($fcmId, $message);
                     break;
@@ -62,14 +62,14 @@ class Dever_Sales_Model_Observer
         foreach ($listArr as $fcmId) {
             $status = uc_words($status);
             switch ($status) {
-                case 'pending':
+                case 'Pending':
                     $message = "Dear {$customer->getName()}, Thanks for your Order. Your Order {$order->getIncrementId()} is submitted with AgentX team. 
                 We will get back to you shortly.";
                     $helper->sendSms($fcmId, $message);
                     break;
-                case 'accepted':
-                case 'complete':
-                case 'canceled':
+                case 'Accepted':
+                case 'Complete':
+                case 'Canceled':
                     $message = "Dear {$customer->getName()}, Your Order {$order->getIncrementId()} is currently in {$status} status.";
                     $helper->sendSms($fcmId, $message);
                     break;

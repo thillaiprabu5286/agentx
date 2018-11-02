@@ -33,6 +33,7 @@ class Dever_App_Model_Api2_Order_Rest_Admin_V2
      */
     public function createOrder($orderData)
     {
+        $debug = true;
         if (!empty($orderData)) {
 
             $this->_initSession($orderData['session']);
@@ -58,9 +59,12 @@ class Dever_App_Model_Api2_Order_Rest_Admin_V2
                     ;
                     $quote->delete();
 
-                    //Trigger Fcm
-                    Mage::helper('dever_sales')->triggerFcm($order);
                 }
+
+                //Trigger Fcm
+                /** @var Dever_Sales_Helper_Data $helper */
+                $helper = Mage::helper('dever_sales');
+                $helper->triggerFcm($order);
 
                 $response = array (
                     'status' => "success",

@@ -4,8 +4,6 @@ class Dever_Sales_Helper_Data extends Mage_Core_Helper_Abstract
 {
     public function triggerFcm($order)
     {
-        //Mage::log("Start Fcm Trigger",null,"fcm.log");
-        $status = $order->getStatus();
         /** @var Dever_Sms_Helper_Fcm $helper */
         $helper = Mage::helper('dever_sms/fcm');
         $customerId = $order->getCustomerId();

@@ -109,7 +109,11 @@ class Dever_App_Model_Api2_Order_Abstract extends Dever_Api2_Model_Resource
                 'price' => $item->getPrice(),
                 'base_price' => $item->getBasePrice(),
                 'row_total' => $item->getRowTotal(),
-                'supplier' => $product->getAttributeText('supplier')
+                'supplier' => $product->getAttributeText('supplier'),
+                'qty_ordered' => $item->getQtyOrdered(),
+                'qty_invoiced' => $item->getQtyInvoiced(),
+                'qty_shipped' => $item->getQtyShipped(),
+                'qty_canceled' => $item->getQtyCanceled(),
             );
 
             $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($order->getCustomerId(), true);

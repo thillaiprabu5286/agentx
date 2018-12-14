@@ -118,6 +118,9 @@
                     <admin>
                         <update>1</update>
                     </admin>
+                    <guest>
+                        <update>1</update>
+                    </guest>
                 </privileges>
                 <routes>
                     <route_entity_order_cancel_v2>

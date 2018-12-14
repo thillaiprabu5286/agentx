@@ -109,6 +109,25 @@
                 </routes>
                 <versions>1</versions>
             </order_api2>
+            <order_cancel_api2>
+                <group>mobile_app</group>
+                <title>Order Cancel</title>
+                <sort_order>1</sort_order>
+                <model>dever_app/api2_order_cancel</model>
+                <privileges>
+                    <admin>
+                        <update>1</update>
+                    </admin>
+                </privileges>
+                <routes>
+                    <route_entity_order_cancel_v2>
+                        <route>/order/cancel/:id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_order_cancel_v2>
+                </routes>
+                <versions>1</versions>
+            </order_cancel_api2>
             <customer_orders_api2 translate="title" module="dever_app">
                 <group>mobile_app</group>
                 <title>Customer Orders</title>

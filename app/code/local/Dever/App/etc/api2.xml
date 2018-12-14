@@ -124,7 +124,7 @@
                 </privileges>
                 <routes>
                     <route_entity_order_cancel_v2>
-                        <route>/order/cancel/:id</route>
+                        <route>/ordercancel/:id</route>
                         <action_type>entity</action_type>
                         <version>2</version>
                     </route_entity_order_cancel_v2>

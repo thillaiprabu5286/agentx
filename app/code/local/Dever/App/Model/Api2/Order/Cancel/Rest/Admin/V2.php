@@ -6,7 +6,7 @@ class Dever_App_Model_Api2_Order_Cancel_Rest_Admin_V2 extends Dever_App_Model_Ap
      * Order Cancelation API
      *
      * @param array $orderData
-     * @return array|void
+     * @return array
      * @throws Exception
      */
     public function _update($request)
@@ -38,9 +38,18 @@ class Dever_App_Model_Api2_Order_Cancel_Rest_Admin_V2 extends Dever_App_Model_Ap
                 $history = $order->addStatusHistoryComment('Order marked as cancelled.', false);
                 $history->setIsCustomerNotified(false);
                 $order->save();
+                $response = array (
+                    'status' => "success",
+                    'message' => "Order {$order->getIncrementId()} Created Successfully"
+                );
             } catch (Exception $e) {
-                Mage::logException($e);
+                $response = array (
+                    'status' => "error",
+                    'message' => (string)$e->getMessage()
+                );
             }
         }
+
+        return $response;
     }
 }

@@ -2,14 +2,23 @@
 <config>
     <modules>
         <Dever_Customer>
-            <version>0.0.2</version>
+            <version>0.0.3</version>
         </Dever_Customer>
     </modules>
     <global>
         <models>
             <dever_customer>
                 <class>Dever_Customer_Model</class>
+                <resourceModel>dever_customer_resource</resourceModel>
             </dever_customer>
+            <dever_customer_resource>
+                <class>Dever_Customer_Model_Resource</class>
+                <entities>
+                    <fcm>
+                        <table>customer_fcm</table>
+                    </fcm>
+                </entities>
+            </dever_customer_resource>
         </models>
         <resources>
             <dever_customer_setup>

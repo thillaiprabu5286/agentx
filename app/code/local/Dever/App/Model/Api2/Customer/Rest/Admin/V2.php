@@ -31,15 +31,12 @@ class Dever_App_Model_Api2_Customer_Rest_Admin_V2
                     $token->createFromCustomer($customer);
                     $token->save();
 
-                    //Save FCM in Customer Model
-                    if ($customer->getFcmId()) {
-                        $fcmList = explode(',', $customer->getFcmId());
-                        array_push($fcmList, $request['fcm_id']);
-                        $_fcm = implode(",",$fcmList);
-                        $customer->setFcmId($_fcm)->save();
-                    } else {
-                        $customer->setFcmId($request['fcm_id'])->save();
-                    }
+                    //Save Fcm in new model
+                    /** @var Dever_Customer_Model_Fcm $fcmModel */
+                    $fcmModel = Mage::getModel('dever_customer/fcm');
+                    $fcmModel->setCustomerId($customer->getId())
+                        ->setFcmId($request['fcm_id'])
+                        ->save();
 
                     //Load Customer Model to get address
                     /** @var Mage_Customer_Model_Customer $_customer */

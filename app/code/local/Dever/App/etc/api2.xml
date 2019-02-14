@@ -207,7 +207,7 @@
                 </privileges>
                 <routes>
                     <route_entity_customer_fcm>
-                        <route>/customer/:customerid/fcm/:fcmid</route>
+                        <route>/customer/fcm/:fcmid</route>
                         <action_type>entity</action_type>
                         <version>2</version>
                     </route_entity_customer_fcm>

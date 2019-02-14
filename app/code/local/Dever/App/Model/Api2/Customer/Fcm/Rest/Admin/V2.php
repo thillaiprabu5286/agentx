@@ -10,11 +10,6 @@ class Dever_App_Model_Api2_Customer_Fcm_Rest_Admin_V2
             Mage::throwException('Fcm ID is not specified');
         }
 
-        $customerId = $this->getRequest()->getParam('customerid');
-        if (empty($customerId)) {
-            Mage::throwException('Customer ID is not specified');
-        }
-
         try {
 
             /** @var Dever_Customer_Model_Fcm $fcm */

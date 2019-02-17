@@ -43,7 +43,7 @@ class Dever_Shell_Bulk_Orders extends Mage_Shell_Abstract
      */
     public function prepareData()
     {
-        $orderData = array();
+        $orders = array();
         try {
             if ($this->_processData) {
                 $csvHeaders = array();
@@ -52,7 +52,7 @@ class Dever_Shell_Bulk_Orders extends Mage_Shell_Abstract
                     if ($key == 0) {
                         $csvHeaders = $lines;
                     } else {
-                        $orderData = array_combine($csvHeaders, $lines);
+                        $orders = array_combine($csvHeaders, $lines);
                     }
                 }
                 echo "--End Save ...\n";
@@ -62,62 +62,64 @@ class Dever_Shell_Bulk_Orders extends Mage_Shell_Abstract
             echo (string)$e->getMessage();
         }
 
-        return $orderData;
+        return $orders;
     }
 
-    public function createOrder($orderData)
+    public function createOrder($orders)
     {
-        $customer = Mage::getModel('customer/customer')
-            ->setWebsiteId(2)
-            ->loadByEmail($orderData['email']);
+        if (!empty($orders)) {
+            foreach ($orders as $orderData) {
 
-        //Prepare from Sheet Data as accepted Order array
-        $orderData = array (
-            'session' => array (
-                'customer_id' => $customer->getId(),
-                'store_id' => 0
-            ),
-            'payment' => array (
-                'method' => 'cashondelivery'
-            ),
-            'items' => $this->_buildItems($orderData['items']),
-            'order' => array (
-                'currency' => 'AED',
-                'billing_address' => array (
-                    'firstname' => $orderData['firstname'],
-                    'lastname' => $orderData['lastname'],
-                    'street' => $orderData['address'],
-                    'country_id' => $orderData['country'],
-                    'city' => $orderData['city'],
-                    'postcode' => $orderData['postcode'],
-                    'telephone' => $orderData['telephone']
-                )
-            ),
-            'shipping_method' => 'freeshipping_freeshipping',
-            'comment' => 'Order Created using sheet'
-        );
+                $customer = Mage::getModel('customer/customer')
+                    ->setWebsiteId(2)
+                    ->loadByEmail($orderData['email']);
 
-        if (!empty($orderData)) {
+                //Prepare from Sheet Data as accepted Order array
+                $orderData = array (
+                    'session' => array (
+                        'customer_id' => $customer->getId(),
+                        'store_id' => 0
+                    ),
+                    'payment' => array (
+                        'method' => 'cashondelivery'
+                    ),
+                    'items' => $this->_buildItems($orderData['items']),
+                    'order' => array (
+                        'currency' => 'AED',
+                        'billing_address' => array (
+                            'firstname' => $orderData['firstname'],
+                            'lastname' => $orderData['lastname'],
+                            'street' => $orderData['address'],
+                            'country_id' => $orderData['country'],
+                            'city' => $orderData['city'],
+                            'postcode' => $orderData['postcode'],
+                            'telephone' => $orderData['telephone']
+                        )
+                    ),
+                    'shipping_method' => 'freeshipping_freeshipping',
+                    'comment' => 'Order Created using sheet'
+                );
 
-            $this->_initSession($orderData['session']);
+                $this->_initSession($orderData['session']);
 
-            try {
-                $this->_processQuote($orderData);
-                if (!empty($orderData['payment'])) {
-                    $this->_getOrderCreateModel()->setPaymentData($orderData['payment']);
-                    $this->_getOrderCreateModel()->getQuote()->getPayment()->addData($orderData['payment']);
+                try {
+                    $this->_processQuote($orderData);
+                    if (!empty($orderData['payment'])) {
+                        $this->_getOrderCreateModel()->setPaymentData($orderData['payment']);
+                        $this->_getOrderCreateModel()->getQuote()->getPayment()->addData($orderData['payment']);
+                    }
+
+                    $order = $this->_getOrderCreateModel()
+                        ->importPostData($orderData['order'])
+                        ->createOrder();
+
+                    echo "{$order->getIncrementId()} \n";
+
+                    $this->_getSession()->clear();
+
+                } catch (Exception $e){
+                    echo (string)$e->getMessage();
                 }
-
-                $order = $this->_getOrderCreateModel()
-                    ->importPostData($orderData['order'])
-                    ->createOrder();
-
-                echo "{$order->getIncrementId()} \n";
-
-                $this->_getSession()->clear();
-
-            } catch (Exception $e){
-                echo (string)$e->getMessage();
             }
         }
     }

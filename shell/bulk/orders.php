@@ -21,7 +21,7 @@ class Dever_Shell_Bulk_Orders extends Mage_Shell_Abstract
     public function _construct()
     {
         parent::_construct();
-        $datafile = Mage::getBaseDir('var') . DS . 'import' . DS . 'orders.xlsx';
+        $datafile = Mage::getBaseDir('var') . DS . 'import' . DS . 'ordersnew.xlsx';
 
         //echo "Loading {$datafile}. \n";
         $xlsx = @(new SimpleXLSX($datafile));
@@ -131,7 +131,10 @@ class Dever_Shell_Bulk_Orders extends Mage_Shell_Abstract
                         ->importPostData($orderData['order'])
                         ->createOrder();
 
-                    //echo "{$order->getIncrementId()} \n";
+                    //Unset Rule Data for every record
+                    Mage::unregister('rule_data');
+
+                    echo "{$order->getIncrementId()} \n";
                     Mage::log("\t Row #{$i} Order Success - " . $order->getIncrementId(), null, 'bulkimport.log');
 
                     $this->_getSession()->clear();
